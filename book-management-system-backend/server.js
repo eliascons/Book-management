@@ -15,10 +15,6 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  context: ({ req }) => {
-    const token = req.headers.authorization || "";
-    return { token };
-  },
 });
 
 await server.start();
@@ -28,7 +24,7 @@ app.use(
   cors(),
   bodyParser.json(),
   expressMiddleware(server, {
-    context: async ({ req }) => ({ token: req.headers.token }),
+    context: async ({ req }) => ({ token: req.headers.authorization }),
   }),
 );
 

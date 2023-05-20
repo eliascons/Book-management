@@ -63,6 +63,7 @@ const resolvers = {
     },
 
     createBook: async (parent, { title, author, publicationYear }, context) => {
+      
       const token = context.token.replace("Bearer ", "");
       const userId = verifyToken(token);
       if (!userId) {
@@ -114,7 +115,9 @@ const resolvers = {
     },
 
     deleteBook: async (parent, { id }, context) => {
+      
       const token = context.token.replace("Bearer ", "");
+      
       const userId = verifyToken(token);
       if (!userId) {
         throw new Error("Unauthorized");
