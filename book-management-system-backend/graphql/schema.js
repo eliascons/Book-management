@@ -21,6 +21,7 @@ const typeDefs = gql`
   type Query {
     books: [Book!]!
     book(id: ID!): Book
+    user(username: String!): User  # Fetch a user by username
   }
 
   type Mutation {
