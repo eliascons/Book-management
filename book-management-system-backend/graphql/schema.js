@@ -13,7 +13,6 @@ const typeDefs = gql`
   type User {
     id: ID!
     username: String!
-    email: String!
     password: String!
     createdAt: String!
     updatedAt: String!
@@ -29,8 +28,8 @@ const typeDefs = gql`
     updateBook(id: ID!, title: String!, author: String!, publicationYear: Int!): Book!
     deleteBook(id: ID!): Book
 
-    createUser(username: String!, email: String!, password: String!): User!
-    updateUser(id: ID!, username: String!, email: String!, password: String!): User!
+    createUser(username: String!, password: String!): User!
+    updateUser(id: ID!, username: String!, password: String!): User!
     deleteUser(id: ID!): User
   }
 
