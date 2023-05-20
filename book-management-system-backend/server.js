@@ -6,7 +6,14 @@ import resolvers from './graphql/resolvers/resolvers.js';
 const app = express();
 const PORT = 3000; // Replace with your desired port number
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ req }) => {
+    const token = req.headers.authorization || "";
+    return { token };
+  },
+});
 
 server.listen().then(({ url }) => {
     console.log(`Server is running at ${url}`);

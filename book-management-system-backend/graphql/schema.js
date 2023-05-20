@@ -26,12 +26,15 @@ const typeDefs = gql`
   type Mutation {
     createBook(title: String!, author: String!, publicationYear: Int!): Book!
     updateBook(id: ID!, title: String!, author: String!, publicationYear: Int!): Book!
-    deleteBook(id: ID!): Book
+    deleteBook(id: ID!): DeleteBookResponse!
 
     register(username: String!, password: String!): User!
     login(username: String!, password: String!): LoginResponse!
   }
 
+  type DeleteBookResponse {
+    message: String!
+  }
 
   type LoginResponse {
     token: String
