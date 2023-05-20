@@ -10,6 +10,15 @@ const typeDefs = gql`
     updatedAt: String!
   }
 
+  type User {
+    id: ID!
+    username: String!
+    email: String!
+    password: String!
+    createdAt: String!
+    updatedAt: String!
+  }
+
   type Query {
     books: [Book!]!
     book(id: ID!): Book
@@ -19,6 +28,10 @@ const typeDefs = gql`
     createBook(title: String!, author: String!, publicationYear: Int!): Book!
     updateBook(id: ID!, title: String!, author: String!, publicationYear: Int!): Book!
     deleteBook(id: ID!): Book
+
+    createUser(username: String!, email: String!, password: String!): User!
+    updateUser(id: ID!, username: String!, email: String!, password: String!): User!
+    deleteUser(id: ID!): User
   }
 
   input BookInput {
