@@ -91,12 +91,17 @@ const resolvers = {
       { id, title, author, publicationYear },
       context
     ) => {
+      if(!context.token){
+        throw new Error("Unauthorized");
+      }
       const token = context.token.replace("Bearer ", "");
       const userId = verifyToken(token);
       if (!userId) {
         throw new Error("Unauthorized");
       }
-
+      if(publicationYear < 1000){
+        throw new Error("Publication year must be greater than 1000");
+      }
       const existingBook = await prisma.book.findUnique({ where: { id } });
       if (!existingBook) {
         throw new Error("Book not found");
