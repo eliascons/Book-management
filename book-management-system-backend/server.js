@@ -10,6 +10,7 @@ import typeDefs from './graphql/schema.js';
 
 const app = express();
 const httpServer = http.createServer(app);
+const PORT = 4000;
 
 const server = new ApolloServer({
   typeDefs,
@@ -28,5 +29,5 @@ app.use(
   }),
 );
 
-await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
-console.log(` Server ready at http://localhost:4000/graphql`);
+await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
+console.log(` Server ready at http://localhost:${PORT}/graphql`);
