@@ -118,28 +118,24 @@ const resolvers = {
 
       return updatedBook;
     },
-
     deleteBook: async (parent, { id }, context) => {
-      
       const token = context.token.replace("Bearer ", "");
-      
       const userId = verifyToken(token);
       if (!userId) {
         throw new Error("Unauthorized");
       }
-
+    
       const existingBook = await prisma.book.findUnique({ where: { id } });
       if (!existingBook) {
         throw new Error("Book not found");
       }
-
-      const { title } = await prisma.book.delete({
+    
+      await prisma.book.delete({
         where: { id },
       });
-
-
+    
       return {
-        message: `Book has been deleted`,
+        message: `Book with ID ${id} has been deleted`,
       };
     },
   },

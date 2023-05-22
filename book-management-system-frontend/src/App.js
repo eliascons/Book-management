@@ -1,43 +1,32 @@
-import Home from "./pages/home";
+import Home from "./pages/Home";
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  Link,
-  Outlet,
   RouterProvider,
 } from "react-router-dom";
-import Login from "./pages/login";
+import Login from "./pages/Login";
+import NavBar from "./components/nav";
+import Add from "./pages/Add";
 
-
-
-const Root = () => {
-  return (
-    <>
-      <div>
-        <Link to="/">Home</Link>
-        <Link to="/login">Login</Link>
-      </div>
-
-      <div>
-        <Outlet />
-      </div>
-    </>
-  );
-};
 
 const App = () => {
+
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<Root />}>
+      <Route path="/" element={<NavBar />}>
         <Route path="/login" index element={<Login />} />
         <Route path="/" index element={<Home />} />
+        <Route path="/add" index element={<Add />} />
+        <Route path="/update/:bookId" index element={<Home />} />
       </Route>
     )
   );
 
   return (
-    <div>
+    <div style={{display: "flex",
+      flexDirection: "column",
+      overflow: "hidden"}}>
       <RouterProvider router={router} />
     </div>
   );

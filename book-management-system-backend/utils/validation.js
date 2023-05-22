@@ -17,8 +17,8 @@ export default function validateEntry(book){
     errors.push("Book author is required and must be a non-empty string.");
   }
 
-  if(!book.publicationYear || typeof book.publicationYear !== "number" || book.publicationYear < 1000){
-    errors.push("Book publicationYear is required and must be a number greater than 1000.");
+  if(!book.publicationYear || typeof book.publicationYear !== "number" || book.publicationYear < 1500){
+    errors.push("Book publicationYear is required and must be a number greater than 1500.");
   }
 
   return errors;

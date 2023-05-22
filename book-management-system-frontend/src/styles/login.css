@@ -1,0 +1,17 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    
+  }
+  
+  .card {
+    width: 300px;
+    border: solid 1px rgb(158, 149, 149);
+    box-shadow: 0 2px 8px rgba(77, 76, 76, 0.15);
+  }
+
+  .error{
+    font-size: 100px
+  }
