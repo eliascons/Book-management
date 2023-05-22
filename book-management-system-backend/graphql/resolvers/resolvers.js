@@ -71,6 +71,18 @@ const resolvers = {
       }
 
       const book = { title, author, publicationYear };
+
+      const existingBook = await prisma.book.findFirst({
+        where: {
+          title: title,
+          author: author,
+        },
+      });
+  
+      if (existingBook) {
+        throw new Error("A book with the same title and author already exists");
+      }
+
       const errors = validateEntry(book);
 
       if (errors.length > 0) {

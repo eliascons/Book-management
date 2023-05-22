@@ -4,6 +4,8 @@ import { Space, Table, Modal, message } from "antd";
 import UpdateBookForm from "../components/updateBook";
 import { useState } from "react";
 import DELETE_BOOK from "../api/books/mutations/deleteBooks";
+import {Link} from "react-router-dom";
+import "../styles/home.css";
 
 const { Column, ColumnGroup } = Table;
 
@@ -14,15 +16,15 @@ const BooksTable = () => {
     refetchQueries: [GET_BOOKS],
   });
 
-  const handleUpdateClick = (bookId) => {
-    if (expandedRowKeys.includes(bookId)) {
-      setExpandedRowKeys((prevKeys) =>
-        prevKeys.filter((key) => key !== bookId)
-      );
-    } else {
-      setExpandedRowKeys((prevKeys) => [...prevKeys, bookId]);
-    }
-  };
+  // const handleUpdateClick = (bookId) => {
+  //   if (expandedRowKeys.includes(bookId)) {
+  //     setExpandedRowKeys((prevKeys) =>
+  //       prevKeys.filter((key) => key !== bookId)
+  //     );
+  //   } else {
+  //     setExpandedRowKeys((prevKeys) => [...prevKeys, bookId]);
+  //   }
+  // };
 
   const handleDeleteClick = (bookId) => {
     Modal.confirm({
@@ -52,9 +54,9 @@ const BooksTable = () => {
         pagination={{hideOnSinglePage: true, pageSize: Infinity}}
         
         rowKey={(item) => item.id}
-        expandedRowKeys={expandedRowKeys}
-        onExpand={(expanded, book) => handleUpdateClick(book.id)}
-        expandedRowRender={(record) => <UpdateBookForm book={record} />}
+        // expandedRowKeys={expandedRowKeys}
+        // onExpand={(expanded, book) => handleUpdateClick(book.id)}
+        // expandedRowRender={(record) => <UpdateBookForm book={record} />}
         
       >
         <ColumnGroup title="All Books">
@@ -71,8 +73,9 @@ const BooksTable = () => {
             key="action"
             render={(book) => (
               <Space size="middle">
-                <a onClick={() => handleUpdateClick(book.id)}>Update</a>
-                <a onClick={() => handleDeleteClick(book.id)}>Delete</a>
+                <Link to={`/update/${book.id}`}>Update</Link>
+                <button className="btn" onClick={() => handleDeleteClick(book.id)}>Delete</button>
+                
               </Space>
             )}
           />

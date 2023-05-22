@@ -1,0 +1,13 @@
+
+
+.btn{
+    border: none; 
+    background: transparent;
+    cursor: pointer;
+    color: rgb(252, 100, 100);
+    transition: 200ms;
+}
+
+.btn:hover{
+    color: brown;
+}
