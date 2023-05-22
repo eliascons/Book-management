@@ -1,8 +1,6 @@
 import { useQuery, useMutation } from "@apollo/client";
 import GET_BOOKS from "../api/books/queries/getAllBooks";
 import { Space, Table, Modal, message } from "antd";
-import UpdateBookForm from "../components/updateBook";
-import { useState } from "react";
 import DELETE_BOOK from "../api/books/mutations/deleteBooks";
 import {Link} from "react-router-dom";
 import "../styles/home.css";
@@ -11,20 +9,10 @@ const { Column, ColumnGroup } = Table;
 
 const BooksTable = () => {
   const { loading, error, data } = useQuery(GET_BOOKS);
-  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+
   const [deleteBook] = useMutation(DELETE_BOOK, {
     refetchQueries: [GET_BOOKS],
   });
-
-  // const handleUpdateClick = (bookId) => {
-  //   if (expandedRowKeys.includes(bookId)) {
-  //     setExpandedRowKeys((prevKeys) =>
-  //       prevKeys.filter((key) => key !== bookId)
-  //     );
-  //   } else {
-  //     setExpandedRowKeys((prevKeys) => [...prevKeys, bookId]);
-  //   }
-  // };
 
   const handleDeleteClick = (bookId) => {
     Modal.confirm({
@@ -47,16 +35,13 @@ const BooksTable = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div style={{ marginTop: "10px", textAlign: "center" }}>
+    <div style={{ marginTop: "50px", textAlign: "center", overflow: "auto" }}>
     <br/>
       <Table
         dataSource={data.books}
         pagination={{hideOnSinglePage: true, pageSize: Infinity}}
         
         rowKey={(item) => item.id}
-        // expandedRowKeys={expandedRowKeys}
-        // onExpand={(expanded, book) => handleUpdateClick(book.id)}
-        // expandedRowRender={(record) => <UpdateBookForm book={record} />}
         
       >
         <ColumnGroup title="All Books">

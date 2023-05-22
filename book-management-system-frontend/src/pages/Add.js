@@ -8,14 +8,12 @@ import "../styles/add.css";
 import ADD_BOOK from "../api/books/mutations/addBook";
 import { useMutation, useQuery } from "@apollo/client";
 import GET_BOOKS from "../api/books/queries/getAllBooks";
-
+import {useState} from "react";
 
 const Add = () => {
   useQuery(GET_BOOKS);
   const [addBook, { loading, error }] = useMutation(ADD_BOOK, {refetchQueries: [GET_BOOKS]});
-  // const [title, setTitle] = useState("");
-  // const [author, setAuthor] = useState("");
-  // const [publicationYear, setPublicationYear] = useState(Number);
+  const [message, setMessage] = useState("");
 
   const handleAdd = (values) => {
     const { title, author, publicationYear } = values;
@@ -23,11 +21,13 @@ const Add = () => {
     addBook({ variables: { title, author, publicationYear: parsedPublicationYear } })
       .then((response) => {
         console.log("Book Added:", response.data.createBook.title);
+        setMessage(`Book Added: ${response.data.createBook.title} by ${response.data.createBook.author}`);
       })
       .catch((error) => {
         console.log("Error adding book:", error);
+        setMessage(``);
       });
-    // addBook
+    
   };
   return (
     <div className="form">
@@ -86,6 +86,7 @@ const Add = () => {
         </Form>
         {loading && <p>Loading...</p>}
         {error && <p>Error: {error.message}</p>}
+        {message}
       </Card>
     </div>
   );

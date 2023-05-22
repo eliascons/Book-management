@@ -1,0 +1,23 @@
+.update-books-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .book-card{
+    width: auto;
+    margin: 0 10px;
+    height: 300px;
+    border-bottom: solid 1px rgba(53, 50, 50, 0.404);
+    overflow: hidden;
+    
+  }
+
+  .update-card {
+    width: auto;
+    margin: 0 10px;
+    height: 300px;
+    border-bottom: solid 1px rgba(53, 50, 50, 0.404);
+    overflow: hidden;
+  }
