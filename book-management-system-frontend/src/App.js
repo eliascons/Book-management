@@ -11,6 +11,7 @@ import Add from "./pages/Add";
 import Register from "./pages/Register";
 import Update from "./pages/Update";
 
+
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -20,6 +21,9 @@ const App = () => {
         <Route path="/register" index element={<Register />} />
         <Route path="/add" index element={<Add />} />
         <Route path="/update/:bookId" index element={<Update />} />
+        
+
+
       </Route>
     )
   );

@@ -19,7 +19,7 @@ const typeDefs = gql`
   type Query {
    
     book(id: ID!): Book
-    books(searchInput: String): [Book]!
+    books(searchInput: String, limit: Int, offset: Int): BookConnection!
     getMe: User
 
   }
@@ -48,6 +48,13 @@ const typeDefs = gql`
     author: String!
     publicationYear: Int!
   }
+
+  type BookConnection {
+    totalCount: Int!
+    books: [Book]!
+  }
+
+
 `;
 
 export default typeDefs;

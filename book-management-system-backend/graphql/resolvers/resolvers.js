@@ -14,7 +14,7 @@ const resolvers = {
         where: { id },
       });
     },
-    books: async (parent, { searchInput }, context, info) => {
+    books: async (parent, { searchInput, limit, offset }, context, info) => {
       const query = searchInput
         ? {
             where: {
@@ -23,11 +23,27 @@ const resolvers = {
                 { title: { contains: searchInput } },
               ],
             },
+            orderBy: {
+              title: "asc",
+            },
+            skip: offset,
+            take: limit,
           }
-        : undefined;
+        : {
+            orderBy: {
+              title: "asc",
+            },
+            skip: offset,
+            take: limit,
+          };
 
-      const result = await prisma.book.findMany(query);
-      return result;
+      const books  = await prisma.book.findMany(query);
+      const totalCount = await prisma.book.count();
+
+      return {
+        totalCount,
+        books ,
+      };
     },
     getMe: async (parent, args, context) => {
       if (!context.token) {

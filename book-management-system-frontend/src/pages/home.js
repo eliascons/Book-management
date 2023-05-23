@@ -18,12 +18,12 @@ const BooksTable = () => {
   });
 
   const { loading, error, data } = useQuery(GET_BOOKS, {
-    variables: { searchInput: input },
+    variables: { searchInput: input, limit: 10, offset: 0 },
     fetchPolicy: "cache-and-network",
   });
 
   const [deleteBook] = useMutation(DELETE_BOOK, {
-    refetchQueries: [{ query: GET_BOOKS, variables: { searchInput: input } }],
+    refetchQueries: [{ query: GET_BOOKS, variables: { searchInput: input, limit: 10, offset: 0 } }],
   });
 
   const handleDeleteClick = (bookId) => {
@@ -49,13 +49,13 @@ const BooksTable = () => {
   const handleSearch = (value) => {
     setInput(value);
   };
-
+  
   if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div style={{ marginTop: "50px", textAlign: "center", overflow: "auto" }}>
       <Search
-        placeholder="Search by title, author..."
+        placeholder="Search by title or author..."
         allowClear
         onSearch={handleSearch}
         style={{
@@ -77,7 +77,7 @@ const BooksTable = () => {
         </div>
       ) : null}
       <Table
-        dataSource={data?.books ?? []}
+        dataSource={data?.books.books ?? []}
         pagination={{ hideOnSinglePage: true, pageSize: Infinity }}
         rowKey={(item) => item.id}
         loading={loading}
