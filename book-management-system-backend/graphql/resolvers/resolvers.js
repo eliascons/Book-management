@@ -30,6 +30,9 @@ const resolvers = {
       return result;
     },
     getMe: async (parent, args, context) => {
+      if (!context.token) {
+        return null;
+      }
       const token = context.token.replace("Bearer ", "");
 
       try {
@@ -40,7 +43,7 @@ const resolvers = {
         });
 
         if (!user) {
-          throw new Error("User not found");
+          return false;
         }
 
         return {

@@ -6,12 +6,16 @@ import "../styles/home.css";
 import GET_BOOKS from "../api/books/queries/getBySearch";
 import { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
+import GET_ME from "../api/users/queries/getUser";
 
 const { Column, ColumnGroup } = Table;
 const { Search } = Input;
 
 const BooksTable = () => {
   const [input, setInput] = useState("");
+  const { data: userData, client } = useQuery(GET_ME, {
+    fetchPolicy: "network-only",
+  });
 
   const { loading, error, data } = useQuery(GET_BOOKS, {
     variables: { searchInput: input },
@@ -59,17 +63,19 @@ const BooksTable = () => {
           marginBottom: "50px",
         }}
       />
-      <div style={{ textAlign: "left", marginBottom: "13px" }}>
-        <Link to="/add">
-          <Button
-            size={"large"}
-            style={{ marginBottom: "13px" }}
-            icon={<PlusOutlined />}
-          >
-            Add Book
-          </Button>
-        </Link>
-      </div>
+      {userData?.getMe ? (
+        <div style={{ textAlign: "left", marginBottom: "13px" }}>
+          <Link to="/add">
+            <Button
+              size={"large"}
+              style={{ marginBottom: "13px" }}
+              icon={<PlusOutlined />}
+            >
+              Add Book
+            </Button>
+          </Link>
+        </div>
+      ) : null}
       <Table
         dataSource={data?.books ?? []}
         pagination={{ hideOnSinglePage: true, pageSize: Infinity }}
@@ -84,22 +90,23 @@ const BooksTable = () => {
             dataIndex="publicationYear"
             key="publicationYear"
           />
-
-          <Column
-            title="Action"
-            key="action"
-            render={(book) => (
-              <Space size="middle">
-                <Link to={`/update/${book.id}`}>Update</Link>
-                <button
-                  className="btn"
-                  onClick={() => handleDeleteClick(book.id)}
-                >
-                  Delete
-                </button>
-              </Space>
-            )}
-          />
+          {userData?.getMe ? (
+            <Column
+              title="Action"
+              key="action"
+              render={(book) => (
+                <Space size="middle">
+                  <Link to={`/update/${book.id}`}>Update</Link>
+                  <button
+                    className="btn"
+                    onClick={() => handleDeleteClick(book.id)}
+                  >
+                    Delete
+                  </button>
+                </Space>
+              )}
+            />
+          ) : null}
         </ColumnGroup>
       </Table>
     </div>
