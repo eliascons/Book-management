@@ -1,28 +1,25 @@
-import { useQuery, useMutation, useLazyQuery } from "@apollo/client";
-import GET_BOOKS from "../api/books/queries/getAllBooks";
-import { Space, Table, Modal, message } from "antd";
+import { useQuery, useMutation } from "@apollo/client";
+import { Space, Table, Modal, message, Input, Button } from "antd";
 import DELETE_BOOK from "../api/books/mutations/deleteBooks";
 import { Link } from "react-router-dom";
 import "../styles/home.css";
-import FILTER_BOOKS from "../api/books/queries/getBySearch";
-
+import GET_BOOKS from "../api/books/queries/getBySearch";
 import { useState } from "react";
+import { PlusOutlined } from "@ant-design/icons";
 
 const { Column, ColumnGroup } = Table;
+const { Search } = Input;
 
 const BooksTable = () => {
-  const { loading, error, data } = useQuery(GET_BOOKS);
-  const [searchInput, setSearchInput] = useState("");
-  const [filteredData, setFilteredData] = useState(null);
+  const [input, setInput] = useState("");
 
-  const [deleteBook] = useMutation(DELETE_BOOK, {
-    refetchQueries: [{ query: GET_BOOKS }],
+  const { loading, error, data } = useQuery(GET_BOOKS, {
+    variables: { searchInput: input },
+    fetchPolicy: "cache-and-network",
   });
 
-  const [filter] = useLazyQuery(FILTER_BOOKS, {
-    onCompleted: (data) => {
-      setFilteredData(data.filter);
-    },
+  const [deleteBook] = useMutation(DELETE_BOOK, {
+    refetchQueries: [{ query: GET_BOOKS, variables: { searchInput: input } }],
   });
 
   const handleDeleteClick = (bookId) => {
@@ -33,43 +30,51 @@ const BooksTable = () => {
         deleteBook({ variables: { id: bookId } })
           .then(() => {
             message.success("Book deleted successfully");
-            if (filteredData) {
-              const updatedFilteredData = filteredData.filter(
-                (book) => book.id !== bookId
-              );
-              setFilteredData(updatedFilteredData);
-            }
           })
           .catch((error) => {
-            message.error("An error occurred while deleting the book");
+            message.error(
+              `An error occurred while deleting the book , ${error.message}`
+            );
+
             console.error(error);
           });
       },
     });
   };
 
-  const getFiltered = () => {
-    filter({ variables: { searchInput: searchInput } });
+  const handleSearch = (value) => {
+    setInput(value);
   };
 
-  if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-
-  const dataSource = filteredData ? filteredData : data.books;
 
   return (
     <div style={{ marginTop: "50px", textAlign: "center", overflow: "auto" }}>
-      <br />
-      <input
-        value={searchInput}
-        onChange={(e) => setSearchInput(e.target.value)}
-      ></input>
-      <button onClick={getFiltered}>Search</button>
-
+      <Search
+        placeholder="Search by title, author..."
+        allowClear
+        onSearch={handleSearch}
+        style={{
+          width: "300px",
+          marginBottom: "50px",
+        }}
+      />
+      <div style={{ textAlign: "left", marginBottom: "13px" }}>
+        <Link to="/add">
+          <Button
+            size={"large"}
+            style={{ marginBottom: "13px" }}
+            icon={<PlusOutlined />}
+          >
+            Add Book
+          </Button>
+        </Link>
+      </div>
       <Table
-        dataSource={dataSource}
+        dataSource={data?.books ?? []}
         pagination={{ hideOnSinglePage: true, pageSize: Infinity }}
         rowKey={(item) => item.id}
+        loading={loading}
       >
         <ColumnGroup title="All Books">
           <Column title="Title" dataIndex="title" key="title" />
@@ -97,8 +102,6 @@ const BooksTable = () => {
           />
         </ColumnGroup>
       </Table>
-
-      {dataSource.length === 0 && <p>No results found.</p>}
     </div>
   );
 };

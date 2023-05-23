@@ -2,31 +2,55 @@ import { PrismaClient } from "@prisma/client";
 import validateEntry from "../../utils/validation.js";
 import { generateToken, verifyToken } from "../../utils/auth.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const resolvers = {
   Query: {
-    books: async () => {
-      return prisma.book.findMany();
-    },
     book: async (parent, { id }) => {
       return prisma.book.findUnique({
         where: { id },
       });
     },
-    filter: async (parent, {searchInput}, context, info) => {
-      const result = await prisma.book.findMany({
-        where: {
-          OR: [
-            { author: { contains: searchInput } },
-            { title: { contains: searchInput } }
-          ]
-        }
-      });
+    books: async (parent, { searchInput }, context, info) => {
+      const query = searchInput
+        ? {
+            where: {
+              OR: [
+                { author: { contains: searchInput } },
+                { title: { contains: searchInput } },
+              ],
+            },
+          }
+        : undefined;
+
+      const result = await prisma.book.findMany(query);
       return result;
     },
+    getMe: async (parent, args, context) => {
+      const token = context.token.replace("Bearer ", "");
 
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+
+        const user = await prisma.user.findUnique({
+          where: { id: decoded.userId },
+        });
+
+        if (!user) {
+          throw new Error("User not found");
+        }
+
+        return {
+          id: user.id,
+          username: user.username,
+        };
+      } catch (error) {
+        throw new Error("Invalid or expired token");
+      }
+    },
   },
 
   Mutation: {
@@ -122,8 +146,8 @@ const resolvers = {
       if (!userId) {
         throw new Error("Unauthorized");
       }
-      if (publicationYear < 1000) {
-        throw new Error("Publication year must be greater than 1000");
+      if (publicationYear < 1500) {
+        throw new Error("Publication year must be greater than 1500");
       }
       const existingBook = await prisma.book.findUnique({ where: { id } });
       if (!existingBook) {

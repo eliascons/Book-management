@@ -14,9 +14,6 @@ const NavBar = () => {
         <Link to="/register" className="link">
           Register
         </Link>
-        <Link to="/add" className="link">
-          Add
-        </Link>
       </div>
 
       <div>

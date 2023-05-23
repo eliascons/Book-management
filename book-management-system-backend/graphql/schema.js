@@ -17,17 +17,18 @@ const typeDefs = gql`
   }
 
   type Query {
-    books: [Book!]!
+   
     book(id: ID!): Book
-    filter(searchInput: String!): [Book!]!
-    currentUser: User!
+    books(searchInput: String): [Book]!
+    getMe: User
 
   }
+
   type Mutation {
     createBook(title: String!, author: String!, publicationYear: Int!): Book!
     updateBook(id: ID!, title: String!, author: String!, publicationYear: Int!): Book!
     deleteBook(id: ID!): DeleteBookResponse!
-
+      
     register(username: String!, password: String!): User!
     login(username: String!, password: String!): LoginResponse!
   }

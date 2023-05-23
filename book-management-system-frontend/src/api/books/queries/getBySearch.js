@@ -1,8 +1,8 @@
 import {gql} from "@apollo/client";
 
 const FILTER_BOOKS = gql`
-  query FilterBooks($searchInput: String!) {
-    filter(searchInput: $searchInput) {
+  query FilterBooks($searchInput: String) {
+    books(searchInput: $searchInput) {
       id
       title
       author
