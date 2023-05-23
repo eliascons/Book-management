@@ -15,6 +15,18 @@ const resolvers = {
         where: { id },
       });
     },
+    filter: async (parent, {searchInput}, context, info) => {
+      const result = await prisma.book.findMany({
+        where: {
+          OR: [
+            { author: { contains: searchInput } },
+            { title: { contains: searchInput } }
+          ]
+        }
+      });
+      return result;
+    },
+
   },
 
   Mutation: {
@@ -63,7 +75,6 @@ const resolvers = {
     },
 
     createBook: async (parent, { title, author, publicationYear }, context) => {
-      
       const token = context.token.replace("Bearer ", "");
       const userId = verifyToken(token);
       if (!userId) {
@@ -78,7 +89,7 @@ const resolvers = {
           author: author,
         },
       });
-  
+
       if (existingBook) {
         throw new Error("A book with the same title and author already exists");
       }
@@ -103,7 +114,7 @@ const resolvers = {
       { id, title, author, publicationYear },
       context
     ) => {
-      if(!context.token){
+      if (!context.token) {
         throw new Error("Unauthorized");
       }
       const token = context.token.replace("Bearer ", "");
@@ -111,7 +122,7 @@ const resolvers = {
       if (!userId) {
         throw new Error("Unauthorized");
       }
-      if(publicationYear < 1000){
+      if (publicationYear < 1000) {
         throw new Error("Publication year must be greater than 1000");
       }
       const existingBook = await prisma.book.findUnique({ where: { id } });
@@ -136,16 +147,16 @@ const resolvers = {
       if (!userId) {
         throw new Error("Unauthorized");
       }
-    
+
       const existingBook = await prisma.book.findUnique({ where: { id } });
       if (!existingBook) {
         throw new Error("Book not found");
       }
-    
+
       await prisma.book.delete({
         where: { id },
       });
-    
+
       return {
         message: `Book with ID ${id} has been deleted`,
       };

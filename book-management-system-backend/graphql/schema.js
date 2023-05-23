@@ -19,7 +19,7 @@ const typeDefs = gql`
   type Query {
     books: [Book!]!
     book(id: ID!): Book
-
+    filter(searchInput: String!): [Book!]!
     currentUser: User!
 
   }
