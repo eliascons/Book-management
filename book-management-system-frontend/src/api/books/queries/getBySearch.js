@@ -1,19 +1,5 @@
 import {gql} from "@apollo/client";
 
-// const FILTER_BOOKS = gql`
-//   query FilterBooks($searchInput: String) {
-//     books(searchInput: $searchInput) {
-//       id
-//       title
-//       author
-//       publicationYear
-//     }
-//   }
-// `;
-
-
-// import { gql } from '@apollo/client';
-
 const FILTER_BOOKS = gql`
   query FilterBooks($searchInput: String, $limit: Int, $offset: Int) {
     books(searchInput: $searchInput, limit: $limit, offset: $offset) {
