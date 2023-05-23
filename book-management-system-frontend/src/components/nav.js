@@ -3,7 +3,6 @@ import "../styles/nav.css";
 import GET_ME from "../api/users/queries/getUser";
 import { useQuery } from "@apollo/client";
 
-
 const NavBar = () => {
   const { data, client } = useQuery(GET_ME, { fetchPolicy: "network-only" });
 
@@ -20,19 +19,23 @@ const NavBar = () => {
           Home
         </Link>
         {!data?.getMe ? (
-          <div>
-            <Link to="/login" className="link">
-              Login
-            </Link>
-          </div>
-        ) : (
-          <button onClick={handleLogout} className="link">
-            Logout
-          </button>
-        )}
-        <Link to="/register" className="link">
-          Register
-        </Link>
+          <Link to="/register" className="link">
+            Register
+          </Link>
+        ) : null}
+        <div className="right-align">
+          {!data?.getMe ? (
+            <div>
+              <Link to="/login">
+                <button className="fancy-btn">Login</button>
+              </Link>
+            </div>
+          ) : (
+            <button onClick={handleLogout} className="fancy-btn">
+              Logout
+            </button>
+          )}
+        </div>
       </div>
 
       <div>

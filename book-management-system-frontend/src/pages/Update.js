@@ -25,27 +25,24 @@ const UpdateBooks = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
   const book = data.book;
-  const handleUpdate = (values) => {
+
+  const handleUpdate = async (values) => {
     const { title, author, publicationYear } = values;
     const { id } = book;
 
-    updateBook({
-      variables: {
-        id,
-        title,
-        author,
-        publicationYear: parseInt(publicationYear, 10),
-      },
-    })
-      .then((response) => {
-        // Handle successful update
-        console.log("Book updated:", response.data.updateBook);
-      })
-      .catch((error) => {
-        // Handle error
-        console.error("Error updating book:", error);
-        console.log("test");
+    try {
+      let response = await updateBook({
+        variables: {
+          id,
+          title,
+          author,
+          publicationYear: parseInt(publicationYear, 10),
+        },
       });
+      console.log("Book updated:", response.data.updateBook);
+    } catch (error) {
+      console.error("Error updating book:", error);
+    }
   };
 
   return (
@@ -102,13 +99,18 @@ const UpdateBooks = () => {
             </Form.Item>
           </Form>
         </Card>
-        {(error || loading || loadingUpdate || updateError) && <Card title="System Message" bordered={false} className="book-card">
-          {loading && <p>Loading...</p>}
-          {error && <p>Error: {error.message}</p>}
-          {loadingUpdate && <p>Loading Update...</p>}
-          {updateError && <p>Error on update: {updateError.message}</p>}
-        </Card>}
-        
+        {(error || loading || loadingUpdate || updateError) && (
+          <Card
+            title="System Message"
+            bordered={false}
+            className="book-card"
+            loading={loading}
+          >
+            {error && <p>Error: {error.message}</p>}
+            {loadingUpdate && <p>Loading Update...</p>}
+            {updateError && <p>Error on update: {updateError.message}</p>}
+          </Card>
+        )}
       </div>
     </>
   );

@@ -13,7 +13,7 @@ const { Search } = Input;
 
 const BooksTable = () => {
   const [input, setInput] = useState("");
-  const { data: userData, client } = useQuery(GET_ME, {
+  const { data: userData } = useQuery(GET_ME, {
     fetchPolicy: "network-only",
   });
 

@@ -1,32 +1,35 @@
 import { useMutation } from "@apollo/client";
-import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Card } from "antd";
 import "../styles/login.css";
 import REGISTER from "../api/users/mutations/registerMutation";
+import LOGIN from "../api/users/mutations/loginMutation";
 
 import UserForm from "../components/userForm";
 
 const Register = () => {
   const [registerUser, { loading, error }] = useMutation(REGISTER);
-  const [success, setSuccess] = useState(false);
+  const [login, { client }] = useMutation(LOGIN);
+  const navigate = useNavigate();
 
-  const handleRegistration = (values) => {
+  const handleRegistration = async (values) => {
     const { username, password } = values;
 
-    registerUser({ variables: { username, password } })
-      .then((result) => {
-        console.log(result);
-        setSuccess(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+    try {
+      let result = await registerUser({ variables: { username, password } });
+      console.log(result);
 
-  if (success) {
-    return <Navigate to="/" />;
-  }
+      const response = await login({ variables: { username, password } });
+      localStorage.setItem("token", response.data.login.token);
+      await client.refetchQueries({
+        include: "active",
+      });
+
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="container">

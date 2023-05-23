@@ -10,15 +10,34 @@ import { setContext } from '@apollo/client/link/context';
 import App from "./App";
 import "./styles/global.css";
 
+
+
+
+const MY_URI = "http://localhost:4000/graphql";
+
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        books: {
+          merge(existing, incoming) {
+            return incoming;
+          },
+        },
+      },
+    },
+  },
+});
+
+
 const httpLink = createHttpLink({
-  uri: "http://localhost:4000/graphql",
+  uri: MY_URI,
 });
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
   const token = localStorage.getItem('token');
   // return the headers to the context so httpLink can read them
-  console.log("test:", _)
   return {
     headers: {
       ...headers,
@@ -28,7 +47,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: cache,
   link: authLink.concat(httpLink)
 });
 

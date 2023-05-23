@@ -1,10 +1,14 @@
 .navbar {
     background-color: black;
     display: flex;
-    justify-content: center;
     padding: 10px;
     margin: 0;
     overflow: auto;
+
+}
+
+.right-align {
+    margin-left: auto;
 }
 
 .link {
@@ -13,9 +17,46 @@
     text-decoration: none;
     font-size: 18px;
     transition: color 0.3s ease-in-out;
-    /* Add transition property */
+
 }
 
 .link:hover {
-    color: rgb(64, 161, 218);
+    color: rgb(58, 75, 173);
+}
+
+
+
+.fancy-btn {
+    background-color: rgb(12, 11, 11);
+    border: 1px solid #d5d9d9;
+    border-radius: 8px;
+    box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+    box-sizing: border-box;
+    color: #e7ebeb;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Amazon Ember", sans-serif;
+    font-size: 13px;
+    line-height: 29px;
+    padding: 0 10px 0 11px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    width: 100px;
+}
+
+.fancy-btn:hover {
+    color: rgb(28, 29, 29);
+    background: rgb(138, 139, 141);
+    
+}
+
+.fancy-btn:focus {
+    background: rgb(138, 139, 141);
+    box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+    outline: 0;
 }

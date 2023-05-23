@@ -13,23 +13,23 @@ const Add = () => {
   const [addBook, { loading, error }] = useMutation(ADD_BOOK);
   const [message, setMessage] = useState("");
 
-  const handleAdd = (values) => {
+  const handleAdd = async (values) => {
     const { title, author, publicationYear } = values;
     const parsedPublicationYear = parseInt(publicationYear, 10);
-    addBook({
-      variables: { title, author, publicationYear: parsedPublicationYear },
-    })
-      .then((response) => {
-        console.log("Book Added:", response.data.createBook.title);
-        setMessage(
-          `Book Added: ${response.data.createBook.title} by ${response.data.createBook.author}`
-        );
-      })
-      .catch((error) => {
-        console.log("Error adding book:", error);
-        setMessage(``);
+
+    try {
+      let response = await addBook({
+        variables: { title, author, publicationYear: parsedPublicationYear },
       });
+      setMessage(
+        `Book Added: ${response.data.createBook.title} by ${response.data.createBook.author}`
+      );
+    } catch (error) {
+      console.log("Error adding book:", error);
+      setMessage(``);
+    }
   };
+  
   return (
     <div className="form">
       <Card
