@@ -15,7 +15,7 @@ const BooksTable = () => {
   const [input, setInput] = useState("");
   const [status, setStatus] = useState(false);
   const [limit, setLimit] = useState(10);
-  
+
   const { data: userData } = useQuery(GET_ME, {
     fetchPolicy: "cache-and-network",
   });
@@ -55,19 +55,24 @@ const BooksTable = () => {
     setLimit(10); // Reset limit to initial value
   };
 
-  const handleChange = () => {
-    const fetchedBooksCount = data?.books.books?.length || 0;
-    if (fetchedBooksCount < limit) {
-      setStatus(true); // No more results to fetch
-    } else {
-      const newOffset = fetchedBooksCount; // Calculate the new offset
-      fetchMore({
-        variables: {
-          offset: newOffset,
-          // limit: 10, // Fetch additional 10 records
-        },
-      });
-      setLimit(newOffset + 10);
+  const handleChange = async () => {
+    try {
+      const fetchedBooksCount = data?.books.books?.length || 0;
+      console.log(fetchedBooksCount);
+      if (fetchedBooksCount < limit) {
+        setStatus(true); // No more results to fetch
+      } else {
+        const newOffset = fetchedBooksCount; // Calculate the new offset
+        await fetchMore({
+          variables: {
+            offset: newOffset,
+            limit: 10, // Fetch additional 10 records
+          },
+        });
+        setLimit(newOffset + 25);
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -75,9 +80,6 @@ const BooksTable = () => {
 
   return (
     <div style={{ marginTop: "50px", textAlign: "center", overflow: "auto" }}>
-      <button onClick={handleChange} disabled={status}>
-        Click me
-      </button>
       <Search
         placeholder="Search by title or author..."
         allowClear
@@ -87,8 +89,11 @@ const BooksTable = () => {
           marginBottom: "50px",
         }}
       />
+      <Button disabled={status} onClick={handleChange}>
+        Load more books...
+      </Button>
       {userData?.getMe ? (
-        <div style={{ textAlign: "left", marginBottom: "13px" }}>
+        <div style={{ textAlign: "center", marginBottom: "13px" }}>
           <Link to="/add">
             <Button
               size={"large"}

@@ -20,10 +20,17 @@ const cache = new InMemoryCache({
     Query: {
       fields: {
         books: {
-          keyArgs: false,
-          merge(existing = [], incoming) {
-            
-            return [...existing, ...incoming.books];
+          read(existing, { args: { offset, limit }}) {
+
+            return existing && existing.slice(offset, offset + limit);
+          },
+          keyArgs: [],
+          merge(existing, incoming, { args: { offset = 0 }}) {
+            const merged = existing ? existing.slice(0) : [];
+            for (let i = 0; i < incoming.books.length; ++i) {
+              merged[offset + i] = incoming.books[i];
+            }
+            return merged;
           },
         },
       },
