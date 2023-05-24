@@ -37,12 +37,12 @@ Inside the `frontend` folder (`book-management-system-frontend`), you will find 
   `JWT_SECRET`=yourDesiredPass
   
   3. Run the following command to install dependencies, this should also migrate the tables:
-  npm install
+  `npm install`
 
-  4. Start the server: node server.js
+  4. Start the server: `node server.js`
   5. Open a different terminal window and navigate to the `frontend` folder (`book-management-system-frontend`).
-  6. Run the following command to install dependencies: npm install
-  7. Start the frontend: npm start
+  6. Run the following command to install dependencies: `npm install`
+  7. Start the frontend: `npm start`
   
   
 The project should now be up and running. You can test the functionalities, but for some operations, you may need to register and login.
