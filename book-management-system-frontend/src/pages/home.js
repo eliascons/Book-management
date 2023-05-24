@@ -42,18 +42,18 @@ const BooksTable = () => {
   const handleChange = async () => {
     try {
       const fetchedBooksCount = data?.books.books?.length || 0;
-      console.log(fetchedBooksCount);
+      
       if (fetchedBooksCount < limit) {
         setStatus(true); // No more results to fetch
       } else {
-        const newOffset = fetchedBooksCount; // Calculate the new offset
+        
         await fetchMore({
           variables: {
-            offset: newOffset,
+            offset: fetchedBooksCount,
             limit: PAGE_LIMIT, 
           },
         });
-        setLimit(newOffset + BOOK_INCREMENT);
+        setLimit(fetchedBooksCount + BOOK_INCREMENT);
       }
     } catch (e) {
       console.log(e);
