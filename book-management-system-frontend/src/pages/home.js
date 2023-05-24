@@ -12,10 +12,13 @@ import handleDeleteClick from "../utils/handleDelete";
 const { Column, ColumnGroup } = Table;
 const { Search } = Input;
 
+const PAGE_LIMIT = 10; // change this to modify the page limit
+const BOOK_INCREMENT = 25; // change this to receive more/less books when pressing the load more button
+
 const BooksTable = () => {
   const [input, setInput] = useState("");
   const [status, setStatus] = useState(false);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(PAGE_LIMIT);
 
   const { data: userData } = useQuery(GET_ME, {
     fetchPolicy: "cache-and-network",
@@ -33,7 +36,7 @@ const BooksTable = () => {
   const handleSearch = (value) => {
     setInput(value);
     setStatus(false); // Reset status to enable "Click me" button
-    setLimit(10); // Reset limit to initial value
+    setLimit(PAGE_LIMIT); // Reset limit to initial value
   };
 
   const handleChange = async () => {
@@ -47,10 +50,10 @@ const BooksTable = () => {
         await fetchMore({
           variables: {
             offset: newOffset,
-            limit: 10, // Fetch additional 10 records
+            limit: PAGE_LIMIT, 
           },
         });
-        setLimit(newOffset + 25);
+        setLimit(newOffset + BOOK_INCREMENT);
       }
     } catch (e) {
       console.log(e);
@@ -77,7 +80,7 @@ const BooksTable = () => {
           marginBottom: "50px",
         }}
       />
-      <Button disabled={status} onClick={handleChange}>
+      <Button disabled={status} onClick={handleChange} loading={loading}>
         Load more books...
       </Button>
       {userData?.getMe ? (
