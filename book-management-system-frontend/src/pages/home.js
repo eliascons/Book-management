@@ -7,6 +7,7 @@ import GET_BOOKS from "../api/books/queries/getBooks";
 import { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import GET_ME from "../api/users/queries/getUser";
+import handleDeleteClick from "../utils/handleDelete";
 
 const { Column, ColumnGroup } = Table;
 const { Search } = Input;
@@ -28,26 +29,6 @@ const BooksTable = () => {
   const [deleteBook] = useMutation(DELETE_BOOK, {
     refetchQueries: [{ query: GET_BOOKS, variables: { searchInput: input } }],
   });
-
-  const handleDeleteClick = (bookId) => {
-    Modal.confirm({
-      title: "Confirm Delete",
-      content: "Are you sure you want to delete this book?",
-      onOk: () => {
-        deleteBook({ variables: { id: bookId } })
-          .then(() => {
-            message.success("Book deleted successfully");
-          })
-          .catch((error) => {
-            message.error(
-              `An error occurred while deleting the book , ${error.message}`
-            );
-
-            console.error(error);
-          });
-      },
-    });
-  };
 
   const handleSearch = (value) => {
     setInput(value);
@@ -79,7 +60,14 @@ const BooksTable = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div style={{ marginTop: "50px", textAlign: "center", overflow: "auto" }}>
+    <div
+      style={{
+        marginTop: "50px",
+        textAlign: "center",
+        overflow: "auto",
+        marginBottom: "50px",
+      }}
+    >
       <Search
         placeholder="Search by title or author..."
         allowClear
@@ -133,7 +121,7 @@ const BooksTable = () => {
                   <Link to={`/update/${book.id}`}>Update</Link>
                   <button
                     className="btn"
-                    onClick={() => handleDeleteClick(book.id)}
+                    onClick={() => handleDeleteClick(book.id, deleteBook)}
                   >
                     Delete
                   </button>
