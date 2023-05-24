@@ -32,7 +32,7 @@ Inside the `frontend` folder (`book-management-system-frontend`), you will find 
 ## Installation and Running the Project Locally
 
 1. After downloading the project, navigate to the `backend` folder (`book-management-system-backend`).
-2. Create a `.env` file in this folder with the following environment variables:
+2. Create a `.env` file in whithin the `book-management-system-backend` folder with the following environment variables:
   `DATABASE_URL`="mysql://yourDbUser:yourDbPassword@yourDbURL/youDbName"
   `JWT_SECRET`=yourDesiredPass
   
@@ -42,7 +42,7 @@ Inside the `frontend` folder (`book-management-system-frontend`), you will find 
   4. Start the server: node server.js
   5. Open a different terminal window and navigate to the `frontend` folder (`book-management-system-frontend`).
   6. Run the following command to install dependencies: npm install
-  7. 7. Start the frontend: npm start
+  7. Start the frontend: npm start
   
   
 The project should now be up and running. You can test the functionalities, but for some operations, you may need to register and login.
