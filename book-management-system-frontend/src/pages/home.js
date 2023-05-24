@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from "@apollo/client";
-import { Space, Table, Modal, message, Input, Button } from "antd";
+import { Space, Table, Input, Button } from "antd";
 import DELETE_BOOK from "../api/books/mutations/deleteBooks";
 import { Link } from "react-router-dom";
 import "../styles/home.css";
