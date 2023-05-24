@@ -1,6 +1,6 @@
 import {gql} from "@apollo/client";
 
-const FILTER_BOOKS = gql`
+const GET_BOOKS = gql`
   query FilterBooks($searchInput: String, $limit: Int, $offset: Int) {
     books(searchInput: $searchInput, limit: $limit, offset: $offset) {
       books {
@@ -16,4 +16,4 @@ const FILTER_BOOKS = gql`
 
 
 
-export default FILTER_BOOKS;
+export default GET_BOOKS;

@@ -4,7 +4,7 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  createHttpLink
+  createHttpLink, 
 } from "@apollo/client";
 import { setContext } from '@apollo/client/link/context';
 import App from "./App";
@@ -20,8 +20,10 @@ const cache = new InMemoryCache({
     Query: {
       fields: {
         books: {
-          merge(existing, incoming) {
-            return incoming;
+          keyArgs: false,
+          merge(existing = [], incoming) {
+            
+            return [...existing, ...incoming.books];
           },
         },
       },
