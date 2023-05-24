@@ -32,13 +32,13 @@ Inside the `frontend` folder (`book-management-system-frontend`), you will find 
 ## Installation and Running the Project Locally
 
 1. After downloading the project, navigate to the `backend` folder (`book-management-system-backend`).
-2. Create a `.env` file in whithin the `book-management-system-backend` folder with the following environment variables:
+2. Create a `.env` file whithin the `book-management-system-backend` folder with the following environment variables:
   `DATABASE_URL`="mysql://yourDbUser:yourDbPassword@yourDbURL/youDbName"
   `JWT_SECRET`=yourDesiredPass
   
   3. Run the following command to install dependencies, this should also migrate the tables:
   npm install
-  
+
   4. Start the server: node server.js
   5. Open a different terminal window and navigate to the `frontend` folder (`book-management-system-frontend`).
   6. Run the following command to install dependencies: npm install
